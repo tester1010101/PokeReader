@@ -17,3 +17,23 @@ pub fn os_time() -> NaiveDateTime {
     let ms = unsafe { bindings::osGetTime() };
     datetime_from_console_ms(ms.saturating_sub(3155673600000))
 }
+
+pub fn live_time() -> u64 {
+    unsafe { bindings::osGetTime() - 3155673600000 }
+}
+
+pub fn elapsed_time() -> u64 {
+    live_time() - game_start_ms()
+}
+
+pub fn ctrpm5() -> bool {
+    if elapsed_time() / 100 % 15 == 0 {
+        return true
+    } else if elapsed_time() / 100 % 3 == 0 {
+        return true
+    } else if elapsed_time() / 100 % 5 == 0 {
+        return true
+    } else {
+        return false
+    }
+}

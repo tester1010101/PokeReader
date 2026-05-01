@@ -1,10 +1,6 @@
 use super::sub_menu::SubMenu;
-use crate::draw::{draw_controls_help, draw_misc_help};
+use crate::draw::{draw_controls_help, draw_misc_help, draw_specific_help};
 use crate::pnp;
-
-fn no_game_specific_help() {
-    pnp::println!("No Game-Specific info.");
-}
 
 enum HelpView {
     Controls,
@@ -14,12 +10,15 @@ enum HelpView {
 
 pub struct HelpMenu {
     specific_help: fn() -> (),
-    sub_menu: SubMenu,
+    sub_menu: SubMenu<1, 3>,
 }
 
 impl Default for HelpMenu {
     fn default() -> Self {
-        HelpMenu::new(no_game_specific_help)
+        HelpMenu {
+            specific_help: || pnp::println!("No Game-Specific info."),
+            sub_menu: SubMenu::default(),
+        }
     }
 }
 
@@ -43,8 +42,8 @@ fn print_view(help_view: &HelpView) {
 impl HelpMenu {
     pub fn new(specific_help: fn() -> ()) -> Self {
         Self {
-            specific_help,
-            sub_menu: SubMenu::new(1, 3),
+            specific_help: specific_help,
+            sub_menu: SubMenu::default(),
         }
     }
 
@@ -56,7 +55,7 @@ impl HelpMenu {
 
         match help_view {
             HelpView::Controls => draw_controls_help(),
-            HelpView::SpecificControls => (self.specific_help)(),
+            HelpView::SpecificControls => draw_specific_help(self.specific_help),
             HelpView::Misc => draw_misc_help(),
         }
     }

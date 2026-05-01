@@ -1,15 +1,15 @@
 use super::{
-    draw::{draw_header, draw_pkx, draw_research, draw_rng},
+    draw::{draw_header, draw_non_cfw, draw_pkx, draw_rng},
     hook::{measured_div, reset_rng_advance},
     reader::Gen2Reader,
 };
 use crate::{
     pnp,
     utils::{
-        help_menu::HelpMenu,
-        menu::{Menu, MenuOption},
-        sub_menu::SubMenu,
         ShowView,
+        help_menu::HelpMenu,
+        menu::{Menu, MenuOption, MenuOptionValue},
+        sub_menu::SubMenu,
     },
 };
 use once_cell::unsync::Lazy;
@@ -20,35 +20,46 @@ enum CrystalView {
     Rng,
     Party,
     Wild,
-    Research,
+    NonCfw,
     HelpMenu,
+}
+
+impl MenuOptionValue for CrystalView {
+    fn get_label(view: Self) -> &'static str {
+        match view {
+            Self::MainMenu => "Main Menu",
+            Self::Rng => "RNG",
+            Self::Party => "Party",
+            Self::Wild => "Wild",
+            Self::NonCfw => "Non-CFW",
+            Self::HelpMenu => "Help",
+        }
+    }
 }
 
 struct PersistedState {
     frame: usize,
     show_view: ShowView,
     view: CrystalView,
-    main_menu: Menu<CrystalView>,
-    party_menu: SubMenu,
+    main_menu: Menu<5, CrystalView>,
+    party_menu: SubMenu<1, 6>,
     help_menu: HelpMenu,
 }
-
-const MENU: &'static [MenuOption<CrystalView>] = &[
-    MenuOption::new(CrystalView::Rng, "RNG"),
-    MenuOption::new(CrystalView::Party, "Party"),
-    MenuOption::new(CrystalView::Wild, "Wild"),
-    MenuOption::new(CrystalView::Research, "Research"),
-    MenuOption::new(CrystalView::HelpMenu, "Help"),
-];
 
 unsafe fn get_state() -> &'static mut PersistedState {
     static mut STATE: Lazy<PersistedState> = Lazy::new(|| PersistedState {
         frame: 0,
         show_view: ShowView::default(),
         view: CrystalView::MainMenu,
-        party_menu: SubMenu::new(1, 6),
+        party_menu: SubMenu::default(),
         help_menu: HelpMenu::default(),
-        main_menu: Menu::new(MENU),
+        main_menu: Menu::new([
+            MenuOption::new(CrystalView::Rng),
+            MenuOption::new(CrystalView::Party),
+            MenuOption::new(CrystalView::Wild),
+            MenuOption::new(CrystalView::NonCfw),
+            MenuOption::new(CrystalView::HelpMenu),
+        ]),
     });
     Lazy::force_mut(&mut STATE)
 }
@@ -85,7 +96,7 @@ pub fn run_frame() {
             let slot = state.party_menu.update_and_draw(is_locked);
             draw_pkx(&reader.party((slot - 1) as u8));
         }
-        CrystalView::Research => draw_research(&reader, state.frame),
+        CrystalView::NonCfw => draw_non_cfw(&reader, state.frame),
         CrystalView::HelpMenu => state.help_menu.update_and_draw(is_locked),
         CrystalView::MainMenu => {
             state.main_menu.update_view();

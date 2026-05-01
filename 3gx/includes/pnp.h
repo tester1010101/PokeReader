@@ -21,5 +21,36 @@ u32 get_trampoline_addr();
 void set_route_hook_addr(u32 route_hook);
 u32 get_route_hook_addr();
 u32 pa_from_va_ptr(u32 addr);
-bool is_citra();
-bool is_memory_mapped(u32 addr);
+
+//use copy/write function from C/3ds and use in rust with var (rng) / (disk file open/write|update/close)
+
+/*
+    void    InitMenu(PluginMenu &menu)
+    {
+        menu += new MenuEntry("Jisho", nullptr, [](MenuEntry *entry)
+        {
+            std::string dictPath = "romfs:/JMdict_smol.txt";
+            if (!File::Exists(dictPath)) {
+                MessageBox("Missing dict", "Please install JMdict_smol.txt to your memory card root")();
+            } else {
+                const int bufferSize = 2000;
+                const int maxResults = 20;
+                const int indexMaxSize = 1000;
+
+                Keyboard keyboard;
+                std::string output = "";
+                if (keyboard.Open(output) != 0) {
+                    return;
+                }
+                std::string search = RomajiToHiragana(output);
+                keyboard.Close();
+
+                if (search == "") {
+                    return;
+                }
+
+                File dict;
+                File::Open(dict, dictPath, File::READ);
+                char* buffer = new char[bufferSize];
+
+*/

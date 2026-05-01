@@ -20,7 +20,9 @@ mod utils;
 pub const VERSION: &str = env!("CARGO_PKG_VERSION");
 pub const GIT_HASH: &str = env!("GIT_HASH");
 
-use title::{loaded_title, LoadedTitle, TitleError};
+//use core::intrinsics::mir::StorageDead;
+
+use title::{LoadedTitle, TitleError, loaded_title};
 
 #[cfg(target_os = "horizon")]
 #[panic_handler]
@@ -90,25 +92,22 @@ fn run_loaded_title_frame(title: LoadedTitle) {
 pub extern "C" fn run_frame() {
     match loaded_title() {
         Ok(title) => run_loaded_title_frame(title),
-        Err(TitleError::InvalidUpdate {
-            remaster_version,
-            is_citra,
-        }) => {
+        Err(TitleError::InvalidUpdate { remaster_version }) => {
             pnp::println!("Unsupported game update!");
             pnp::println!("");
             pnp::println!("Please update your game");
             pnp::println!("for PokeReader to run");
-            pnp::println!("");
-            pnp::println!("Detected info:");
-            pnp::println!(
-                "Playing on {}",
-                match is_citra {
-                    true => "Citra",
-                    false => "Real hardware",
-                }
-            );
-            pnp::println!("Update ver {}", remaster_version);
+            pnp::println!("Update {}", remaster_version)
         }
         Err(TitleError::InvalidTitle) => {}
     }
 }
+
+#[no_mangle]
+pub extern "C" fn namefn() {
+    //core::ffi::c_str();
+    //.
+    //core::arch::asm!();
+}
+
+

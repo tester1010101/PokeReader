@@ -1,17 +1,12 @@
 use super::CircularCounter;
 use crate::pnp;
 
-pub struct SubMenu {
-    counter: CircularCounter,
+#[derive(Default)]
+pub struct SubMenu<const MIN: usize, const MAX: usize> {
+    counter: CircularCounter<MIN, MAX>,
 }
 
-impl SubMenu {
-    pub fn new(min: usize, max: usize) -> Self {
-        Self {
-            counter: CircularCounter::new(min, max),
-        }
-    }
-
+impl<const MIN: usize, const MAX: usize> SubMenu<MIN, MAX> {
     fn draw_header(&self) {
         pnp::println!("Slot {}", self.counter.value());
         pnp::println!("[v] Next | Prev [^]");

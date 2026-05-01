@@ -1,25 +1,72 @@
 use super::reader::Gen7Reader;
+use crate::pnp::elapsed_time;
 use crate::{
-    pnp,
-    rng::{RngWrapper, Sfmt},
-    utils::{format_egg_parent, is_daycare_masuda_method},
+    pnp, rng::{RngWrapper, Sfmt}, utils::{format_egg_parent, is_daycare_masuda_method}
 };
 
-pub use crate::draw::{draw_header, draw_pkx, draw_pkx_brief, get_pp, print_pp, PkxType, GREEN, RED, WHITE};
+
+pub use crate::draw::{GREEN, PkxType, RED, WHITE, CYAN, PURPLE, BLUE, ORANGE, PINK, YELLOW, draw_header, draw_pkx, draw_pkx_brief, get_pp, print_pp};
+
+pub fn draw_rn(rng: &RngWrapper<Sfmt>) {
+    if elapsed_time() / 100 % 5 == 0 {
+        pnp::println!(color = PINK, " seed: {:08X}", rng.init_seed())
+    } else if elapsed_time() / 100 % 2 == 0 {
+        pnp::println!(color = ORANGE, " seed: {:08X}", rng.init_seed())
+    } else {
+        pnp::println!(color = CYAN, " seed: {:08X}", rng.init_seed())
+    }
+}
 
 pub fn draw_rng(reader: &Gen7Reader, rng: &RngWrapper<Sfmt>) {
     let sfmt_state = rng.current_state();
 
-    pnp::println!("Seed:     {:08X}", rng.init_seed());
+    pnp::println!(color = BLUE, "Seed:     {:08X}", rng.init_seed());
     pnp::println!("State[1]: {:08X}", (sfmt_state & 0xffffffff) as u32);
     pnp::println!("State[0]: {:08X}", (sfmt_state >> 32) as u32);
-    pnp::println!("Advances: {}", rng.advances());
+    pnp::println!(color = CYAN, "Advances: {}", rng.advances());
+    pnp::println!(color = PURPLE, "");
+    pnp::println!(color = ORANGE, "Gen7TID: {}", reader.g7tid());
+    pnp::println!(color = PINK, "TSV: {}, TRV: {:X}", reader.tsv(), reader.trv());
     pnp::println!("");
-    pnp::println!("Gen7TID: {}", reader.g7tid());
-    pnp::println!("TSV: {}, TRV: {:X}", reader.tsv(), reader.trv());
-    pnp::println!("");
-    pnp::println!("NPC count: {}", reader.npc_count());
+    pnp::println!(color = YELLOW, "NPC count: {}", reader.npc_count());
+    if reader.line_ctrpm5() {
+        if reader.has_shiny_charm() {
+            pnp::println!(color = GREEN, "ITM: Shiny Charm (I)");
+        } else {
+            pnp::println!(color = RED, "ITM: Shiny Charm (O)");
+        }
+    } else {
+        if reader.has_shiny_charm() {
+            pnp::println!(color = BLUE, "ITM: Shiny Charm (I)");
+        } else {
+            pnp::println!(color = GREEN, "ITM: Shiny Charm (O)");
+        }
+    }
 }
+
+
+
+
+pub fn draw_test(){
+    pnp::println!("This is a Long String");
+    pnp::println!("Search in src files");
+    pnp::println!("Customize with stuff");
+}
+    /*
+    if reader.line_ctrpm5() {
+        if reader.has_shiny_charm() {
+            pnp::println!(color = GREEN, "ITM: Shiny Charm (I)");
+        } else {
+            pnp::println!(color = RED, "ITM: Shiny Charm (O)");
+        }
+    } else {
+        if reader.has_shiny_charm() {
+            pnp::println!(color = YELLOW, "ITM: Shiny Charm (I)");
+        } else {
+            pnp::println!(color = YELLOW, "ITM: Shiny Charm (O)");
+        }
+    }
+    */
 
 pub fn draw_citra_info(reader: &Gen7Reader) {
     let main_rng_seed_context = reader.main_rng_seed_context();
@@ -28,8 +75,6 @@ pub fn draw_citra_info(reader: &Gen7Reader) {
     pnp::println!("Seed date: {}", datetime.format("%b %d %Y"));
     pnp::println!("Seed time: {}", datetime.format("%H:%M:%S"));
     pnp::println!("Time offset: {}", main_rng_seed_context.time_offset_ms);
-    pnp::println!("");
-    pnp::println!("On citra: {}", pnp::is_citra());
 }
 
 pub fn draw_sos(reader: &Gen7Reader, slot: u32, correction: u32) {

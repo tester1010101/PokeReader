@@ -36,7 +36,7 @@ impl Sfmt {
         self.sfmt[0] ^= !inner & 1;
     }
 
-    fn get_current_state(&self) -> u64 {
+    pub fn get_current_state(&self) -> u64 {
         let index = if self.index != 624 { self.index } else { 0 };
         let low = self.sfmt[index] as u64;
         let high = self.sfmt[index + 1] as u64;

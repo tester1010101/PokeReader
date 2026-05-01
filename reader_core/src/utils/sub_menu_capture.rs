@@ -1,19 +1,13 @@
 use super::CircularCounter;
 use crate::pnp;
 
-pub struct SubMenuCapture {
-    counter: CircularCounter,
+#[derive(Default)]
+pub struct SubMenuCapture<const MIN: usize, const MAX: usize> {
+    counter: CircularCounter<MIN, MAX>,
     value: u32,
 }
 
-impl SubMenuCapture {
-    pub fn new(min: usize, max: usize) -> Self {
-        Self {
-            counter: CircularCounter::new(min, max),
-            value: 0,
-        }
-    }
-
+impl<const MIN: usize, const MAX: usize> SubMenuCapture<MIN, MAX> {
     fn update_counter(&mut self, is_locked: bool, capture_value: u32, set_value: usize) {
         if is_locked {
             return;

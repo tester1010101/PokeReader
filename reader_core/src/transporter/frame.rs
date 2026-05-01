@@ -1,15 +1,15 @@
 use super::{
-    draw::{draw_header, draw_pkx, draw_rng, PkxType},
+    draw::{PkxType, draw_header, draw_pkx, draw_rng},
     reader::TransporterReader,
     rng::TransporterRng,
 };
 use crate::{
     pnp,
     utils::{
-        help_menu::HelpMenu,
-        menu::{Menu, MenuOption},
-        sub_menu::SubMenu,
         ShowView,
+        help_menu::HelpMenu,
+        menu::{Menu, MenuOption, MenuOptionValue},
+        sub_menu::SubMenu,
     },
 };
 use once_cell::unsync::Lazy;
@@ -22,29 +22,38 @@ enum TransporterView {
     HelpMenu,
 }
 
+impl MenuOptionValue for TransporterView {
+    fn get_label(view: Self) -> &'static str {
+        match view {
+            Self::MainMenu => "Main Menu",
+            Self::Pokemon => "Pokemon",
+            Self::Rng => "RNG",
+            Self::HelpMenu => "Help",
+        }
+    }
+}
+
 struct PersistedState {
     rng: TransporterRng,
     show_view: ShowView,
     view: TransporterView,
-    main_menu: Menu<TransporterView>,
+    main_menu: Menu<3, TransporterView>,
     help_menu: HelpMenu,
-    pokemon_menu: SubMenu,
+    pokemon_menu: SubMenu<1, 30>,
 }
-
-const MENU: &'static [MenuOption<TransporterView>] = &[
-    MenuOption::new(TransporterView::Rng, "RNG"),
-    MenuOption::new(TransporterView::Pokemon, "Pokemon"),
-    MenuOption::new(TransporterView::HelpMenu, "Help"),
-];
 
 unsafe fn get_state() -> &'static mut PersistedState {
     static mut STATE: Lazy<PersistedState> = Lazy::new(|| PersistedState {
         rng: TransporterRng::default(),
         show_view: ShowView::default(),
         view: TransporterView::MainMenu,
-        pokemon_menu: SubMenu::new(1, 30),
+        pokemon_menu: SubMenu::default(),
         help_menu: HelpMenu::default(),
-        main_menu: Menu::new(MENU),
+        main_menu: Menu::new([
+            MenuOption::new(TransporterView::Rng),
+            MenuOption::new(TransporterView::Pokemon),
+            MenuOption::new(TransporterView::HelpMenu),
+        ]),
     });
     Lazy::force_mut(&mut STATE)
 }

@@ -1,14 +1,40 @@
-use super::title::{loaded_title, LoadedTitle};
+use super::title::{LoadedTitle, loaded_title};
 use crate::alloc::string::ToString;
 use crate::crystal::CRYSTAL_CYAN;
-use crate::pnp;
+use crate::pnp::elapsed_time;
 use crate::{GIT_HASH, VERSION};
+use crate::{pnp, utils::menu::MenuOptionValue};
 use pkm_rs::{Nature, Pkx, Shiny};
 
-pub const WHITE: u32 = 0xffffff;
-pub const GREEN: u32 = 0x00cc00;
-pub const RED: u32 = 0xff0000;
+
+
 pub const MUTED_CYAN: u32 = 0x00cccc;
+
+pub const WHITE: u32 = 0xffffff;
+pub const GREEN: u32 = 0x00ff00;
+pub const RED: u32 = 0xff0000;
+pub const BLUE: u32 = 0x0000ff;
+pub const CYAN: u32 = 0x00edff;
+pub const PINK: u32 = 0xff00cf;
+pub const PURPLE: u32 = 0x7c00ff;
+pub const ORANGE: u32 = 0xff6700;
+pub const YELLOW: u32 = 0xfff800;
+
+
+
+
+pub fn draw_version(){
+    pnp::println!("()()");//(" Ver {} {}", VERSION, GIT_HASH);
+
+    if elapsed_time() / 100 % 5 == 0 {
+        pnp::println!(color = YELLOW, " tester1010101 rework")
+    } else if elapsed_time() / 100 % 2 == 0 {
+        pnp::println!(color = RED, " tester1010101 rework")
+    } else {
+        pnp::println!(color = GREEN, " tester1010101 rework")
+    }
+}
+
 
 fn get_shiny_color(is_shiny: bool) -> u32 {
     match is_shiny {
@@ -52,6 +78,8 @@ impl From<(Stat, Stat)> for NatureStat {
         Self { increase, decrease }
     }
 }
+
+
 
 fn nature_stat(nature: Nature) -> NatureStat {
     match nature {
@@ -240,6 +268,10 @@ pub fn draw_controls_help() {
     pnp::println!(" - Frame Advance");
 }
 
+pub fn draw_specific_help(draw_func: fn() -> ()) {
+    draw_func();
+}
+
 pub fn draw_misc_help() {
     pnp::println!("PokeReader");
     draw_version();
@@ -258,19 +290,35 @@ pub fn draw_misc_help() {
         _ => pnp::println!(color = MUTED_CYAN, " discord.gg/d8JuAvg"),
     }
 }
-
+//if elapsed_time() / 100 % 15 == 0 =>
+/*
 pub fn draw_version() {
     pnp::println!(" Ver {} {}", VERSION, GIT_HASH);
+    //pnp::println!("S: {}", rng::RngWrapper::init_seed());
+    pnp::println!("{:08X}", rng.init_seed());
+    if elapsed_time() / 100 % 5 == 0 {
+        pnp::println!(color = YELLOW, " tester1010101 rework")
+    } else if elapsed_time() / 100 % 2 == 0 {
+        pnp::println!(color = RED, " tester1010101 rework")
+    } else {
+        pnp::println!(color = GREEN, " tester1010101 rework")
+    }
+    //if elapsed_time() / 100 % 15 == 0 =>
 }
-
-pub fn draw_header<T: Eq>(main_menu: T, current_view: T, is_locked: bool) {
+*/
+pub fn draw_header<T: MenuOptionValue + Eq>(main_menu: T, current_view: T, is_locked: bool) {
+    //let value = MenuOption::new(value);
     if is_locked {
+        //pnp::println!("MenuLocked");
         pnp::println!("Unlock X+Y");
     } else if current_view == main_menu {
-        pnp::println!("-> Accept / Lock X+Y");
+        //pnp::println!("MainMenu/.");
+        pnp::println!("=> Open / Lock X+Y");
     } else {
-        pnp::println!("<- Back / Lock X+Y");
+        //pnp::println!("SubMenu/{}", value.MenuOptionValue);
+        pnp::println!("<= Back / Lock X+Y");
     }
 
     pnp::println!("");
+    //pnp::println!("T5");
 }

@@ -1,10 +1,7 @@
 use super::{game_lib, hook};
 use crate::pnp;
-use core::num::{NonZeroU32, NonZeroU8};
+use core::num::{NonZeroU8, NonZeroU32};
 use pkm_rs::{Pk7, PokeCrypto};
-
-pub const SM_SOS_SFMT_ADDR: u32 = 0x30038c44;
-pub const USUM_SOS_SFMT_ADDR: u32 = 0x30038e30;
 
 struct Gen7Addresses {
     initial_seed: u32,
@@ -41,11 +38,11 @@ const SM_ADDRESSES: Gen7Addresses = Gen7Addresses {
     party: 0x34195e10,
     wild: 0x3002f7b8,
     sos: 0x3002f7b8,
-    _sos_index: 0x30039604,
-    orb_active: 0x3003960c,
+    _sos_index: 0x30039614,
+    orb_active: 0x3003961c,
     sos_chain_length: 0x3003960d,
-    _ally_id: 0x3003960e,
-    _prev_call_succeed: 0x3003960f,
+    _ally_id: 0x3003961e,
+    _prev_call_succeed: 0x3003961f,
     pelago: 0x331110ca,
     egg_ready: 0x3313edd8,
     egg: 0x3313eddc,
@@ -67,10 +64,10 @@ const USUM_ADDRESSES: Gen7Addresses = Gen7Addresses {
     party: 0x33f7fa44,
     wild: 0x3002f9a0,
     sos: 0x3002f9a0,
-    _sos_index: 0x300397f0,
+    _sos_index: 0x300397F0,
     orb_active: 0x300397f8,
     sos_chain_length: 0x300397f9,
-    _ally_id: 0x300397fa,
+    _ally_id: 0x300397fA,
     _prev_call_succeed: 0x300397fb,
     pelago: 0x3304d16a,
     egg_ready: 0x3307b1e8,
@@ -106,6 +103,10 @@ impl Gen7Reader {
         }
     }
 
+    pub fn line_ctrpm5(&self) -> bool {
+        pnp::ctrpm5()
+    }
+    
     pub fn g7tid(&self) -> u32 {
         let sidtid = pnp::read::<u32>(self.addrs.id);
 

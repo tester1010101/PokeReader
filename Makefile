@@ -14,8 +14,8 @@ out/default.3gx: $(LIBPOKEREADER) $(C_SRCS) $(H_SRCS)
 	make clean -C 3gx
 	make -C 3gx
 	mkdir -p out
-	cp 3gx/build/3gx.3gx out/default.3gx
-
+	cp 3gx/build/3gx.3gx ../../AppData/Roaming/AzaharPlus/sdmc/luma/plugins/default.3gx
+	rm -rf out
 clean:
 	cargo clean --manifest-path reader_core/Cargo.toml
 	make clean -C 3gx

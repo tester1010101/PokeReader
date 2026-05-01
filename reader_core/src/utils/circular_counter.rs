@@ -1,22 +1,16 @@
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
-pub struct CircularCounter {
-    min: usize,
-    max: usize,
+pub struct CircularCounter<const MIN: usize, const MAX: usize> {
     value: usize,
 }
 
-impl CircularCounter {
-    pub fn new(min: usize, max: usize) -> Self {
-        Self { min, max, value: min }
-    }
-
+impl<const MIN: usize, const MAX: usize> CircularCounter<MIN, MAX> {
     pub fn value(&self) -> usize {
         self.value
     }
 
     pub fn increment(&mut self) -> usize {
-        if self.value == self.max {
-            self.value = self.min;
+        if self.value == MAX {
+            self.value = MIN;
         } else {
             self.value += 1;
         }
@@ -25,8 +19,8 @@ impl CircularCounter {
     }
 
     pub fn decrement(&mut self) -> usize {
-        if self.value == self.min {
-            self.value = self.max;
+        if self.value == MIN {
+            self.value = MAX;
         } else {
             self.value -= 1;
         }
@@ -34,8 +28,14 @@ impl CircularCounter {
         self.value
     }
     pub fn set(&mut self, value: usize) -> usize {
-        self.value = value.clamp(self.min, self.max);
+        self.value = value.clamp(MIN, MAX);
         self.value
+    }
+}
+
+impl<const MIN: usize, const MAX: usize> Default for CircularCounter<MIN, MAX> {
+    fn default() -> Self {
+        Self { value: MIN }
     }
 }
 
@@ -43,12 +43,14 @@ impl CircularCounter {
 mod test {
     use super::*;
 
+    type TestCounter = CircularCounter<1, 3>;
+
     mod value {
         use super::*;
 
         #[test]
         fn should_return_value() {
-            let counter = CircularCounter::new(1, 3);
+            let counter = TestCounter { value: 1 };
             assert_eq!(counter.value(), 1);
         }
     }
@@ -58,33 +60,18 @@ mod test {
 
         #[test]
         fn should_increment() {
-            let mut counter = CircularCounter::new(1, 3);
+            let mut counter = TestCounter { value: 1 };
             let result = counter.increment();
             assert_eq!(result, 2);
-            assert_eq!(
-                counter,
-                CircularCounter {
-                    value: 2,
-                    min: 1,
-                    max: 3
-                }
-            );
+            assert_eq!(counter, TestCounter { value: 2 });
         }
 
         #[test]
         fn should_increment_to_min_on_overflow() {
-            let mut counter = CircularCounter::new(1, 3);
-            counter.set(3);
+            let mut counter = TestCounter { value: 3 };
             let result = counter.increment();
             assert_eq!(result, 1);
-            assert_eq!(
-                counter,
-                CircularCounter {
-                    value: 1,
-                    min: 1,
-                    max: 3
-                }
-            );
+            assert_eq!(counter, TestCounter { value: 1 });
         }
     }
 
@@ -93,33 +80,18 @@ mod test {
 
         #[test]
         fn should_decrement() {
-            let mut counter = CircularCounter::new(1, 3);
-            counter.set(2);
+            let mut counter = TestCounter { value: 2 };
             let result = counter.decrement();
             assert_eq!(result, 1);
-            assert_eq!(
-                counter,
-                CircularCounter {
-                    value: 1,
-                    min: 1,
-                    max: 3
-                }
-            );
+            assert_eq!(counter, TestCounter { value: 1 });
         }
 
         #[test]
         fn should_decrement_to_min_on_overflow() {
-            let mut counter = CircularCounter::new(1, 3);
+            let mut counter = TestCounter { value: 1 };
             let result = counter.decrement();
             assert_eq!(result, 3);
-            assert_eq!(
-                counter,
-                CircularCounter {
-                    value: 3,
-                    min: 1,
-                    max: 3
-                }
-            );
+            assert_eq!(counter, TestCounter { value: 3 });
         }
     }
 }
