@@ -1,6 +1,6 @@
-# PokeReader
+#  ☀️🌈 PokeReader, with a touch of rainbow 🌈🍀
 
-# # // Screenshots/GIFs videos coming soon, you can try release if needed on emu
+# # // SCs/GIFs videos SOON, you can try release if needed on Emu.
 
 PokeReader is a 3gx plugin that allows viewing information about 3ds Pokemon games, such as:
 
