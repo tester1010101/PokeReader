@@ -1,5 +1,7 @@
 # PokeReader
 
+# # // Screenshots/GIFs videos coming soon, you can try release if needed on emu
+
 PokeReader is a 3gx plugin that allows viewing information about 3ds Pokemon games, such as:
 
 - RNG states
