@@ -10,6 +10,7 @@ use crate::{
         menu::{Menu, MenuOption},
         sub_menu::SubMenu,
         sub_menu_capture::SubMenuCapture,
+        ShowView
     }
 };
 use once_cell::unsync::Lazy;

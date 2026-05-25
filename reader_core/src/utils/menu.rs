@@ -44,7 +44,7 @@ impl<Value: Copy> Menu<Value> {
 
     fn cursor_str(&self, index: usize) -> &str {
         if self.counter.value() == index {
-            ">"
+            "}"
         } else {
             " "
         }
