@@ -1,9 +1,7 @@
-use super::title::{LoadedTitle, loaded_title};
+use super::title::{loaded_title, LoadedTitle};
 use crate::alloc::string::ToString;
 use crate::crystal::CRYSTAL_CYAN;
-use crate::pnp::elapsed_time;
-use crate::{GIT_HASH, VERSION};
-use crate::{pnp, utils::menu::MenuOptionValue};
+use crate::{pnp, pnp::elapsed_time};
 use pkm_rs::{Nature, Pkx, Shiny};
 
 
@@ -24,14 +22,14 @@ pub const YELLOW: u32 = 0xfff800;
 
 
 pub fn draw_version(){
-    pnp::println!("()()");//(" Ver {} {}", VERSION, GIT_HASH);
+    pnp::println!("()()");
 
     if elapsed_time() / 100 % 5 == 0 {
-        pnp::println!(color = YELLOW, " tester1010101 rework")
+        pnp::println!(color = YELLOW, "  tester1010101 rework")
     } else if elapsed_time() / 100 % 2 == 0 {
-        pnp::println!(color = RED, " tester1010101 rework")
+        pnp::println!(color = RED, "  tester1010101 rework")
     } else {
-        pnp::println!(color = GREEN, " tester1010101 rework")
+        pnp::println!(color = GREEN, "  tester1010101 rework")
     }
 }
 
@@ -290,35 +288,15 @@ pub fn draw_misc_help() {
         _ => pnp::println!(color = MUTED_CYAN, " discord.gg/d8JuAvg"),
     }
 }
-//if elapsed_time() / 100 % 15 == 0 =>
-/*
-pub fn draw_version() {
-    pnp::println!(" Ver {} {}", VERSION, GIT_HASH);
-    //pnp::println!("S: {}", rng::RngWrapper::init_seed());
-    pnp::println!("{:08X}", rng.init_seed());
-    if elapsed_time() / 100 % 5 == 0 {
-        pnp::println!(color = YELLOW, " tester1010101 rework")
-    } else if elapsed_time() / 100 % 2 == 0 {
-        pnp::println!(color = RED, " tester1010101 rework")
-    } else {
-        pnp::println!(color = GREEN, " tester1010101 rework")
-    }
-    //if elapsed_time() / 100 % 15 == 0 =>
-}
-*/
-pub fn draw_header<T: MenuOptionValue + Eq>(main_menu: T, current_view: T, is_locked: bool) {
-    //let value = MenuOption::new(value);
+
+pub fn draw_header<T: Eq>(main_menu: T, current_view: T, is_locked: bool) {
     if is_locked {
-        //pnp::println!("MenuLocked");
-        pnp::println!("Unlock X+Y");
+        pnp::println!("UL: XY == CST.3GX");//"Unlock X+Y");
     } else if current_view == main_menu {
-        //pnp::println!("MainMenu/.");
-        pnp::println!("=> Open / Lock X+Y");
+        pnp::println!("=> USUM.3GX - CST.3GX");//-> Accept / Lock X+Y");
     } else {
-        //pnp::println!("SubMenu/{}", value.MenuOptionValue);
-        pnp::println!("<= Back / Lock X+Y");
+        pnp::println!("=> USUM.3GX - CST.3GX");//<- Back / Lock X+Y");
     }
 
     pnp::println!("");
-    //pnp::println!("T5");
 }

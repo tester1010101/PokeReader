@@ -1,39 +1,30 @@
-
-//
-use crate::draw::{BLUE, GREEN, ORANGE, PURPLE, YELLOW};
 use crate::{draw::draw_version, pnp, pnp::Button, utils::CircularCounter};
 use crate::pnp::elapsed_time;
-//
 
-pub trait MenuOptionValue: Copy {
-    fn get_label(option: Self) -> &'static str;
-}
+use crate::draw::{GREEN, ORANGE, YELLOW};
 
-pub struct MenuOption<Value: MenuOptionValue> {
+pub struct MenuOption<Value> {
     label: &'static str,
     value: Value,
 }
 
-impl<Value: MenuOptionValue> MenuOption<Value> {
-    pub fn new(value: Value) -> Self {
-        Self {
-            value,
-            label: Value::get_label(value),
-        }
+impl<Value> MenuOption<Value> {
+    pub const fn new(value: Value, label: &'static str) -> Self {
+        Self { value, label }
     }
 }
 
-pub struct Menu<const MAX: usize, Value: MenuOptionValue> {
+pub struct Menu<Value: 'static + Copy> {
     is_locked: bool,
-    counter: CircularCounter<1, MAX>,
-    options: [MenuOption<Value>; MAX],
+    counter: CircularCounter,
+    options: &'static [MenuOption<Value>],
 }
 
-impl<const MAX: usize, Value: MenuOptionValue> Menu<MAX, Value> {
-    pub fn new(options: [MenuOption<Value>; MAX]) -> Self {
+impl<Value: Copy> Menu<Value> {
+    pub fn new(options: &'static [MenuOption<Value>]) -> Self {
         Self {
             is_locked: false,
-            counter: CircularCounter::default(),
+            counter: CircularCounter::new(1, options.len()),
             options,
         }
     }
@@ -52,25 +43,25 @@ impl<const MAX: usize, Value: MenuOptionValue> Menu<MAX, Value> {
     }
 
     fn cursor_str(&self, index: usize) -> &str {
-        if self.counter.value() == index { "}" } else { " " }
+        if self.counter.value() == index {
+            ">"
+        } else {
+            " "
+        }
     }
 
     pub fn draw(&self) {
-        //let rng: &RngWrapper<Sfmt>;
         for (index, option) in self.options.iter().enumerate() {
-            if elapsed_time() / 1000 % 5 == 0 {
+            if elapsed_time() / 500 % 5 == 0 {
             pnp::println!(color = YELLOW, "{} {}", self.cursor_str(index + 1), option.label);
-            } else if elapsed_time() / 1000 % 2 == 0 {
+            } else if elapsed_time() / 500 % 2 == 0 {
             pnp::println!(color = GREEN, "{} {}", self.cursor_str(index + 1), option.label);
             } else {
             pnp::println!(color = ORANGE, "{} {}", self.cursor_str(index + 1), option.label);
-            }
-            //pnp::println!(color = RED, "{} {}", self.cursor_str(index + 1), option.label);
+            }        
         }
-        pnp::println!("");//   EOFTAG");
+        pnp::println!("");
         draw_version();
-        //check_frame1();
-        //draw_seed(rng);
     }
 
     pub fn update_view(&mut self) {

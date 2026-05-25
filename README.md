@@ -1,8 +1,5 @@
-#  ☀️🌈 PokeReader, with a touch of rainbow 🌈🍀
-    => Reworked with seed on start and a tint of RGB, fully customizable with any value on start possible.
-<img width="402" height="574" alt="pr1" src="https://github.com/user-attachments/assets/64be57b3-d073-44e8-a8a0-599062348f38" />
+# PokeReader
 
-#
 PokeReader is a 3gx plugin that allows viewing information about 3ds Pokemon games, such as:
 
 - RNG states

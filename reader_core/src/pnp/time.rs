@@ -26,6 +26,10 @@ pub fn elapsed_time() -> u64 {
     live_time() - game_start_ms()
 }
 
+pub fn live_write(buffer: u32) {
+    unsafe { bindings::writeToSdmcDirectly(buffer) }
+}
+
 pub fn ctrpm5() -> bool {
     if elapsed_time() / 100 % 15 == 0 {
         return true

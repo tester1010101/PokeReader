@@ -3,6 +3,9 @@ use crate::pnp;
 use core::num::{NonZeroU8, NonZeroU32};
 use pkm_rs::{Pk7, PokeCrypto};
 
+pub const SM_SOS_SFMT_ADDR: u32 = 0x30038c44;
+pub const USUM_SOS_SFMT_ADDR: u32 = 0x30038e30;
+
 struct Gen7Addresses {
     initial_seed: u32,
     sfmt_state_index: u32,
@@ -12,8 +15,9 @@ struct Gen7Addresses {
     sos: u32,
     orb_active: u32,
     sos_chain_length: u32,
+    sos_index: u32,
+    sos_sfmt_state: u32,
     // To be used in the future vvv
-    _sos_index: u32,
     _ally_id: u32,
     _prev_call_succeed: u32,
     //
@@ -38,7 +42,8 @@ const SM_ADDRESSES: Gen7Addresses = Gen7Addresses {
     party: 0x34195e10,
     wild: 0x3002f7b8,
     sos: 0x3002f7b8,
-    _sos_index: 0x30039614,
+    sos_index: 0x30039614,
+    sos_sfmt_state: SM_SOS_SFMT_ADDR,
     orb_active: 0x3003961c,
     sos_chain_length: 0x3003960d,
     _ally_id: 0x3003961e,
@@ -64,7 +69,8 @@ const USUM_ADDRESSES: Gen7Addresses = Gen7Addresses {
     party: 0x33f7fa44,
     wild: 0x3002f9a0,
     sos: 0x3002f9a0,
-    _sos_index: 0x300397F0,
+    sos_index: 0x300397F0,
+    sos_sfmt_state: USUM_SOS_SFMT_ADDR,
     orb_active: 0x300397f8,
     sos_chain_length: 0x300397f9,
     _ally_id: 0x300397fA,

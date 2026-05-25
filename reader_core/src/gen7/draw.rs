@@ -1,23 +1,38 @@
 use super::reader::Gen7Reader;
-use crate::pnp::elapsed_time;
+use crate::pnp::{elapsed_time, live_write};
 use crate::{
-    pnp, rng::{RngWrapper, Sfmt}, utils::{format_egg_parent, is_daycare_masuda_method}
+    pnp, 
+    rng::{RngWrapper, Sfmt64}, 
+    utils::{format_egg_parent, is_daycare_masuda_method}
 };
-
 
 pub use crate::draw::{GREEN, PkxType, RED, WHITE, CYAN, PURPLE, BLUE, ORANGE, PINK, YELLOW, draw_header, draw_pkx, draw_pkx_brief, get_pp, print_pp};
 
-pub fn draw_rn(rng: &RngWrapper<Sfmt>) {
-    if elapsed_time() / 100 % 5 == 0 {
-        pnp::println!(color = PINK, " seed: {:08X}", rng.init_seed())
-    } else if elapsed_time() / 100 % 2 == 0 {
-        pnp::println!(color = ORANGE, " seed: {:08X}", rng.init_seed())
+pub fn draw_rn2(rng: &RngWrapper<Sfmt64>) {
+/*
+    if elapsed_time() / 50 % 5 == 0 {
+        pnp::println!(color = GREEN, "  RAW: {}", rng.init_seed())
+    } else if elapsed_time() / 50 % 2 == 0 {
+        pnp::println!(color = RED, "  RAW: {}", rng.init_seed())
     } else {
-        pnp::println!(color = CYAN, " seed: {:08X}", rng.init_seed())
+        pnp::println!(color = BLUE, "  RAW: {}", rng.init_seed())
+    }
+*/
+}
+
+pub fn draw_rn(rng: &RngWrapper<Sfmt64>) {
+
+    if elapsed_time() / 100 % 5 == 0 {
+        pnp::println!(color = PINK, "  seed: {:08X}", rng.init_seed());
+        live_write(rng.init_seed())
+    } else if elapsed_time() / 100 % 2 == 0 {
+        pnp::println!(color = ORANGE, "  seed: {:08X}", rng.init_seed())
+    } else {
+        pnp::println!(color = CYAN, "  seed: {:08X}", rng.init_seed())
     }
 }
 
-pub fn draw_rng(reader: &Gen7Reader, rng: &RngWrapper<Sfmt>) {
+pub fn draw_rng(reader: &Gen7Reader, rng: &RngWrapper<Sfmt64>) {
     let sfmt_state = rng.current_state();
 
     pnp::println!(color = BLUE, "Seed:     {:08X}", rng.init_seed());
@@ -44,29 +59,12 @@ pub fn draw_rng(reader: &Gen7Reader, rng: &RngWrapper<Sfmt>) {
     }
 }
 
-
-
-
 pub fn draw_test(){
     pnp::println!("This is a Long String");
     pnp::println!("Search in src files");
     pnp::println!("Customize with stuff");
+    
 }
-    /*
-    if reader.line_ctrpm5() {
-        if reader.has_shiny_charm() {
-            pnp::println!(color = GREEN, "ITM: Shiny Charm (I)");
-        } else {
-            pnp::println!(color = RED, "ITM: Shiny Charm (O)");
-        }
-    } else {
-        if reader.has_shiny_charm() {
-            pnp::println!(color = YELLOW, "ITM: Shiny Charm (I)");
-        } else {
-            pnp::println!(color = YELLOW, "ITM: Shiny Charm (O)");
-        }
-    }
-    */
 
 pub fn draw_citra_info(reader: &Gen7Reader) {
     let main_rng_seed_context = reader.main_rng_seed_context();
@@ -74,6 +72,7 @@ pub fn draw_citra_info(reader: &Gen7Reader) {
     pnp::println!("Seed ticks: {:08X}", main_rng_seed_context.ticks);
     pnp::println!("Seed date: {}", datetime.format("%b %d %Y"));
     pnp::println!("Seed time: {}", datetime.format("%H:%M:%S"));
+    pnp::println!("On citra: {}", pnp::is_citra());
     pnp::println!("Time offset: {}", main_rng_seed_context.time_offset_ms);
 }
 
