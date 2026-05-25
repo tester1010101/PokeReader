@@ -3,8 +3,9 @@ use super::{
     reader::Gen7Reader,
 };
 use crate::{
-    pnp, rng::{RngWrapper, Sfmt64, Sfmt32}, utils::{
-        ShowView,
+    pnp,
+    rng::{RngWrapper, Sfmt32, Sfmt64},
+    utils::{
         help_menu::HelpMenu,
         menu::{Menu, MenuOption},
         sub_menu::SubMenu,
@@ -87,15 +88,12 @@ unsafe fn get_state() -> &'static mut PersistedState {
 fn run_frame(reader: Gen7Reader) {
     pnp::set_print_max_len(22);
 
-    let init_seed: u32 = reader.init_seed();
-    let sfmt_state: u64 = reader.sfmt_state();
-
     // This is safe as long as this is guaranteed to run single threaded.
     // A lock hinders performance too much on a 3ds.
     let state = unsafe { get_state() };
 
-    state.sfmt.reinit_if_needed(init_seed);
-    state.sfmt.update_advances(sfmt_state);
+    state.sfmt.reinit_if_needed(reader.init_seed());
+    state.sfmt.update_advances(reader.sfmt_state());
 
     if !state.show_view.check() {
         return;
@@ -121,7 +119,7 @@ fn run_frame(reader: Gen7Reader) {
                 reader.ally_slot(prev_caller_slot as u32, prev_correction_value) as usize + 1,
             );
             let correction_value = state.sos_menu.captured_value();
-            draw_sos(&reader, caller_slot as u32, correction_value);
+            draw_sos(&reader, &mut state.sos_rng, caller_slot as u32, correction_value);
         }
         Gen7View::Box => draw_pkx(&reader.box_pkm(), PkxType::Tame),
         Gen7View::Citra => draw_citra_info(&reader),
