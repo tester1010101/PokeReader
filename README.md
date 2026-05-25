@@ -1,5 +1,22 @@
 #  ☀️🌈 PokeReader, with a touch of rainbow 🌈🍀
     => Reworked with seed on start and a tint of RGB, fully customizable with any value on start possible.
+[`3DS_Release_V2/sdmc_seed:`](https://github.com/tester1010101/PokeReader/releases/tag/0.8.0-rework-v2) `https://github.com/tester1010101/PokeReader/releases/tag/0.8.0-rework-v2`
+
+New features: 
+> ✓ Colored Main Menu with customizable colors/flashspeed.
+> 
+> ✓ Colored Submenus (can be made MORE colored, as needed).
+> 
+> ✓ Custom Headers (tester1010101 rework / CST.3GX).
+>
+> ✓ Seed on Start Page with information+support (src).
+>
+> ✓ Seed file on SDMC gets updated at each game restart (ms latency).
+>
+> ✓ Any data can be on start menu, mod/impl. may be req. though.
+> 
+
+
 <img width="402" height="574" alt="pr1" src="https://github.com/user-attachments/assets/64be57b3-d073-44e8-a8a0-599062348f38" />
 
 #
