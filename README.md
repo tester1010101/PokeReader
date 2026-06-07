@@ -1,6 +1,6 @@
 #  ☀️🌈 PokeReader, with a touch of rainbow 🌈🍀
     => Reworked with seed on start and a tint of RGB, fully customizable with any value on start possible.
-[`3DS_Release_V2/sdmc_seed:`](https://github.com/tester1010101/PokeReader/releases/tag/0.8.0-rework-v2) `https://github.com/tester1010101/PokeReader/releases/tag/0.8.0-rework-v2`
+[`3DS_Release_V3/sdmc_seed:`](https://github.com/tester1010101/PokeReader/releases/tag/0.8.0-rework-v3) `https://github.com/tester1010101/PokeReader/releases/tag/0.8.0-rework-v3`
 
 New features: 
 > ✓ Colored Main Menu with customizable colors/flashspeed.
@@ -44,7 +44,7 @@ This information can be used to RNG shiny and high IV Pokemon, similar to lua sc
 ## Installing
 
 1. Update to the latest [Luma](https://github.com/LumaTeam/Luma3DS/releases) or set up [Citra](https://github.com/citra-emu/citra).
-1. Download and unzip the [latest PokeReader release](https://github.com/zaksabeast/PokeReader/releases/latest).
+1. Download and unzip the [latest PokeRGB release](https://github.com/tester1010101/PokeReader/releases/tag/0.8.0-rework-v3).
 1. Copy `default.3gx` to `/luma/plugins/default.3gx` on your sd card (create the directory if it doesn't exist).
 
 ## Building
@@ -55,7 +55,7 @@ This information can be used to RNG shiny and high IV Pokemon, similar to lua sc
 ## Credits
 
 Thanks to these projects, teams, and individuals for being great resources:
-
+- [Zaksabeast](https://github.com/zaksabeast/PokeReader/) for all the code snippets
 - [PKHeX](https://github.com/kwsch/PKHeX/) for Pokemon related documentation, examples, and code
 - [ShinySylveon04](https://github.com/ShinySylveon04/) for building most of the UI
 - [Bambo-Rambo for the DexNav and Radar addresses](https://github.com/Bambo-Rambo/TinyFinder/blob/99917164b43bf79bd7432b271cced7a4d62b8431/Subforms/NTR/NtrClient.cs#L319-L326)
