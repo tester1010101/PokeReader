@@ -1,9 +1,10 @@
 use super::{
-    draw::{PkxType, draw_citra_info, draw_daycare, draw_header, draw_pkx, draw_rng, draw_rn, draw_rn2, draw_sos, draw_test},
+    draw::{PkxType, draw_citra_info, draw_daycare, draw_header, draw_pkx, draw_rng, draw_rn, draw_sos, draw_test},
     reader::Gen7Reader,
 };
 use crate::{
     pnp,
+    title::draw_rn2,
     rng::{RngWrapper, Sfmt32, Sfmt64},
     utils::{
         help_menu::HelpMenu,
@@ -44,6 +45,7 @@ enum Gen7View {
     HelpMenu,
     TestMenu,
 }
+
 struct PersistedState {
     sfmt: RngWrapper<Sfmt64>,
     sos_rng: RngWrapper<Sfmt32>,
@@ -84,6 +86,17 @@ unsafe fn get_state() -> &'static mut PersistedState {
         main_menu: Menu::new(MENU),
     });
     Lazy::force_mut(&mut STATE)
+}
+
+struct XP {
+    xp1: bool,
+}
+
+unsafe fn get_state2() -> &'static mut XP {
+    static mut STATE2: Lazy<XP> = Lazy::new(|| XP {
+        xp1: false,
+    });
+    Lazy::force_mut(&mut STATE2)
 }
 
 fn run_frame(reader: Gen7Reader) {
@@ -133,17 +146,22 @@ fn run_frame(reader: Gen7Reader) {
             draw_pkx(&reader.pelago_pkm((slot - 1) as u32), PkxType::Wild)
         }
         Gen7View::HelpMenu => state.help_menu.update_and_draw(is_locked),
-        Gen7View::TestMenu => draw_test(),
+        Gen7View::TestMenu => draw_test(&state.sfmt),
         Gen7View::MainMenu => {
             state.main_menu.update_view();
             state.main_menu.draw();
-            //pnp::println!("{:#?}", draw_rn2(&state.sfmt));
             pnp::println!("{:#?}", draw_rn(&state.sfmt))
         }
     }
+
+    let state2 = unsafe { get_state2() };
+    
+    if state2.xp1 == false {
+        draw_rn2(&state.sfmt);
+        state2.xp1 = true;
+    }
+
 }
-
-
 
 pub fn run_sm_frame() {
     let reader = Gen7Reader::sm();

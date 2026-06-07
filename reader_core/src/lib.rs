@@ -20,8 +20,6 @@ mod utils;
 pub const VERSION: &str = env!("CARGO_PKG_VERSION");
 pub const GIT_HASH: &str = env!("GIT_HASH");
 
-//use core::intrinsics::mir::StorageDead;
-
 use title::{LoadedTitle, TitleError, loaded_title};
 
 #[cfg(target_os = "horizon")]

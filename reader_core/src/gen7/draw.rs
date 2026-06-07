@@ -1,5 +1,5 @@
 use super::reader::Gen7Reader;
-use crate::pnp::{elapsed_time, live_write};
+use crate::pnp::{elapsed_time};
 use crate::{
     pnp,
     rng::{RngWrapper, Sfmt32, Sfmt64},
@@ -8,23 +8,12 @@ use crate::{
 
 pub use crate::draw::{GREEN, PkxType, RED, WHITE, CYAN, PURPLE, BLUE, ORANGE, PINK, YELLOW, draw_header, draw_pkx, draw_pkx_brief, get_pp, print_pp};
 
-pub fn draw_rn2(rng: &RngWrapper<Sfmt64>) {
-/*
-    if elapsed_time() / 50 % 5 == 0 {
-        pnp::println!(color = GREEN, "  RAW: {}", rng.init_seed())
-    } else if elapsed_time() / 50 % 2 == 0 {
-        pnp::println!(color = RED, "  RAW: {}", rng.init_seed())
-    } else {
-        pnp::println!(color = BLUE, "  RAW: {}", rng.init_seed())
-    }
-*/
-}
+
 
 pub fn draw_rn(rng: &RngWrapper<Sfmt64>) {
 
     if elapsed_time() / 100 % 5 == 0 {
         pnp::println!(color = PINK, "  seed: {:08X}", rng.init_seed());
-        live_write(rng.init_seed())
     } else if elapsed_time() / 100 % 2 == 0 {
         pnp::println!(color = ORANGE, "  seed: {:08X}", rng.init_seed())
     } else {
@@ -59,11 +48,32 @@ pub fn draw_rng(reader: &Gen7Reader, rng: &RngWrapper<Sfmt64>) {
     }
 }
 
-pub fn draw_test(){
+pub fn draw_test(rng: &RngWrapper<Sfmt64>){
     pnp::println!("This is a Long String");
     pnp::println!("Search in src files");
     pnp::println!("Customize with stuff");
-    
+
+    if elapsed_time() / 500 % 5 == 0 {
+        pnp::println!(color = PINK, "  seed: {:08X}", rng.init_seed());
+    } else if elapsed_time() / 400 % 2 == 0 {
+        pnp::println!(color = ORANGE, "  seed: {:08X}", rng.init_seed())
+    } else {
+        pnp::println!(color = CYAN, "  seed: {:08X}", rng.init_seed())
+    }  
+    if elapsed_time() / 900 % 5 == 0 {
+        pnp::println!(color = PINK, "  seed: {:08X}", rng.init_seed());
+    } else if elapsed_time() / 200 % 2 == 0 {
+        pnp::println!(color = ORANGE, "  seed: {:08X}", rng.init_seed())
+    } else {
+        pnp::println!(color = CYAN, "  seed: {:08X}", rng.init_seed())
+    }  
+    if elapsed_time() / 5000 % 5 == 0 {
+        pnp::println!(color = PINK, "  seed: {:08X}", rng.init_seed());
+    } else if elapsed_time() / 600 % 2 == 0 {
+        pnp::println!(color = ORANGE, "  seed: {:08X}", rng.init_seed())
+    } else {
+        pnp::println!(color = CYAN, "  seed: {:08X}", rng.init_seed())
+    }    
 }
 
 pub fn draw_citra_info(reader: &Gen7Reader) {

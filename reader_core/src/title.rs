@@ -1,6 +1,9 @@
 use crate::pnp;
+use crate::pnp::{live_write};
+use crate::rng::{RngWrapper, Sfmt64};// Sfmt32, Sfmt64};
 use alloc::{format, string::String};
 use num_enum::TryFromPrimitive;
+
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, TryFromPrimitive)]
 #[repr(u64)]
@@ -96,6 +99,12 @@ fn get_update_version(title: LoadedTitle) -> UpdateInfo {
     }
 }
 
+
+pub fn draw_rn2(rng: &RngWrapper<Sfmt64>) {
+    live_write(rng.init_seed());
+}
+
+
 pub fn loaded_title() -> &'static Result<LoadedTitle, TitleError> {
     // Reader is single-threaded, so this is safe.
     // Even then, title and update version will also always be the same values.
@@ -103,6 +112,7 @@ pub fn loaded_title() -> &'static Result<LoadedTitle, TitleError> {
         if LOADED {
             return &LOAD_RESULT;
         }
+
 
         LOADED = true;
 

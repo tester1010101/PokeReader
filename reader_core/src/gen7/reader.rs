@@ -112,7 +112,7 @@ impl Gen7Reader {
     pub fn line_ctrpm5(&self) -> bool {
         pnp::ctrpm5()
     }
-    
+
     pub fn g7tid(&self) -> u32 {
         let sidtid = pnp::read::<u32>(self.addrs.id);
 
