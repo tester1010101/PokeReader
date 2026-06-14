@@ -14,7 +14,9 @@ New features:
 > ✓ Seed file on SDMC gets updated at each game restart (ms latency).
 >
 > ✓ Any data can be on start menu, mod/impl. may be req. though.
-> 
+>
+> ✕ Only display RNG on start with Gen7 (US/UM), no other gen planned either... 
+
 
 
 <img width="402" height="574" alt="pr1" src="https://github.com/user-attachments/assets/64be57b3-d073-44e8-a8a0-599062348f38" />
