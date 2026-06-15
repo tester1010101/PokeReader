@@ -17,7 +17,9 @@ New features:
 >
 > ✓ Any data can be on start menu, mod/impl. may be req. though.
 >
-> ✕ Only display RNG on start with Gen7 (US/UM), no other gen planned either... 
+> ✕ Only display RNG on start with Gen7 (US/UM), no other gen planned either...
+>
+> ✕ If you're adventurous you can adjust to your needs...
 
 
 
