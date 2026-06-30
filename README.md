@@ -2,7 +2,7 @@
     => Reworked with seed on start and a tint of RGB, fully customizable with any value on start possible.
 [`3DS_Release_V3/sdmc_seed:`](https://github.com/tester1010101/PokeReader/releases/tag/0.8.0-rework-v3) `https://github.com/tester1010101/PokeReader/releases/tag/0.8.0-rework-v3`
 
-[`Check out: 3DSRNG-RGB_Ver.`](https://github.com/tester1010101/3DSRNGTool/releases/tag/1.0.6-rework-v2) `https://github.com/tester1010101/3DSRNGTool/releases/tag/1.0.6-rework-v2`
+[`Check out: 3DSRNG-RGB_Ver.`](https://github.com/tester1010101/3DSRNGTool/releases/tag/1.0.6-rework-v3) `https://github.com/tester1010101/3DSRNGTool/releases/tag/1.0.6-rework-v3`
 
 New features: 
 > ✓ Colored Main Menu with customizable colors/flashspeed.
