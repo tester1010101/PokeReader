@@ -21,8 +21,7 @@ New features:
 >
 > ✕ Only display RNG on start with Gen7 (US/UM), no other gen planned either...
 >
-> ✕ If you're adventurous you can adjust to your needs...
-
+> ! This is a PoC for a future university presentation, it can be taken down if needed.
 
 
 <img width="402" height="574" alt="pr1" src="https://github.com/user-attachments/assets/64be57b3-d073-44e8-a8a0-599062348f38" />
