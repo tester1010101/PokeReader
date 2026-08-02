@@ -65,8 +65,10 @@ pub fn run_frame() {
     }
 
     let is_locked = state.main_menu.update_lock();
+    let is_cached = state.main_menu.update_cached();
+
     state.view = state.main_menu.next_view(TransporterView::MainMenu, state.view);
-    draw_header(TransporterView::MainMenu, state.view, is_locked);
+    draw_header(TransporterView::MainMenu, state.view, is_locked, is_cached);
 
     match state.view {
         TransporterView::Rng => draw_rng(&state.rng),

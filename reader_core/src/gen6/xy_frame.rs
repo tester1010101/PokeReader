@@ -85,8 +85,10 @@ pub fn run_xy_frame() {
     }
 
     let is_locked = state.main_menu.update_lock();
+    let is_cached = state.main_menu.update_cached();
+    
     state.view = state.main_menu.next_view(XyView::MainMenu, state.view);
-    draw_header(XyView::MainMenu, state.view, is_locked);
+    draw_header(XyView::MainMenu, state.view, is_locked, is_cached);
 
     match state.view {
         XyView::Rng => draw_rng(&reader, &state.rng),

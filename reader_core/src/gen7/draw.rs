@@ -6,11 +6,18 @@ use crate::{
     utils::{format_egg_parent, is_daycare_masuda_method},
 };
 
-pub use crate::draw::{GREEN, PkxType, RED, WHITE, CYAN, PURPLE, BLUE, ORANGE, PINK, YELLOW, draw_header, draw_pkx, draw_pkx_brief, get_pp, print_pp};
-
-
+pub use crate::draw::{GREEN, PkxType, RED, WHITE, CYAN, PURPLE, BLUE, ORANGE, PINK, YELLOW, draw_pkx, draw_pkx_brief, get_pp, print_pp};
 
 pub fn draw_rn(rng: &RngWrapper<Sfmt64>) {
+    if elapsed_time() / 100 % 5 == 0 {
+        pnp::println!(color = RED, "  adv: {}", rng.advances());
+    } else if elapsed_time() / 100 % 2 == 0 {
+        pnp::println!(color = GREEN, "  adv: {}", rng.advances())
+    } else if elapsed_time() / 200 % 2 == 0 {
+        pnp::println!(color = YELLOW, "  adv: {}", rng.advances())
+    } else {
+        pnp::println!(color = BLUE, "  adv: {}", rng.advances())
+    }
 
     if elapsed_time() / 100 % 5 == 0 {
         pnp::println!(color = PINK, "  seed: {:08X}", rng.init_seed());
@@ -49,6 +56,7 @@ pub fn draw_rng(reader: &Gen7Reader, rng: &RngWrapper<Sfmt64>) {
 }
 
 pub fn draw_test(rng: &RngWrapper<Sfmt64>){
+    /*
     pnp::println!("This is a Long String");
     pnp::println!("Search in src files");
     pnp::println!("Customize with stuff");
@@ -73,7 +81,8 @@ pub fn draw_test(rng: &RngWrapper<Sfmt64>){
         pnp::println!(color = ORANGE, "  seed: {:08X}", rng.init_seed())
     } else {
         pnp::println!(color = CYAN, "  seed: {:08X}", rng.init_seed())
-    }    
+    } 
+    */   
 }
 
 pub fn draw_citra_info(reader: &Gen7Reader) {

@@ -51,8 +51,8 @@ impl HelpMenu {
     pub fn update_and_draw(&mut self, is_locked: bool) {
         let help_view = view(self.sub_menu.update_headless(is_locked));
         print_view(&help_view);
-        pnp::println!("[v] Next | Prev [^]");
-        pnp::println!("");
+        //pnp::println!("[v] Next | Prev [^]");
+        //pnp::println!("");
 
         match help_view {
             HelpView::Controls => draw_controls_help(),

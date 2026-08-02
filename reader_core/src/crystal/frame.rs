@@ -77,8 +77,10 @@ pub fn run_frame() {
     }
 
     let is_locked = state.main_menu.update_lock();
+    let is_cached = state.main_menu.update_cached();
+
     state.view = state.main_menu.next_view(CrystalView::MainMenu, state.view);
-    draw_header(CrystalView::MainMenu, state.view, is_locked);
+    draw_header(CrystalView::MainMenu, state.view, is_locked, is_cached);
 
     match state.view {
         CrystalView::Rng => draw_rng(&reader),

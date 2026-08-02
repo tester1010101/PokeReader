@@ -179,6 +179,26 @@ pub fn shiny_type(pkx: &impl Pkx) -> &'static str {
     }
 }
 
+pub fn draw_pkx_mini(pkx: &impl Pkx, pkx_type: PkxType, slot: u32) {
+    
+    let slot2 = slot;
+    let iv_hp = pkx.iv_hp();
+    let iv_atk = pkx.iv_atk();
+    let iv_def = pkx.iv_def();
+    let iv_spa = pkx.iv_spa();
+    let iv_spd = pkx.iv_spd();
+    let iv_spe = pkx.iv_spe();
+
+
+    if elapsed_time() / 100 % 5 == 0 {
+        pnp::println!(color = PINK, "IV{}: {}/{}/{}/{}/{}/{}", slot2, iv_hp, iv_atk, iv_def, iv_spa, iv_spd, iv_spe);
+    } else if elapsed_time() / 100 % 2 == 0 {
+        pnp::println!(color = ORANGE, "IV{}: {}/{}/{}/{}/{}/{}", slot2, iv_hp, iv_atk, iv_def, iv_spa, iv_spd, iv_spe);
+    } else {
+        pnp::println!(color = CYAN, "IV{}: {}/{}/{}/{}/{}/{}", slot2, iv_hp, iv_atk, iv_def, iv_spa, iv_spd, iv_spe);
+    }
+}
+
 pub fn draw_pkx_brief(pkx: &impl Pkx) {
     let species = pkx.species_t().to_string();
     let ability = pkx.ability_t().to_string();
@@ -209,6 +229,90 @@ pub fn draw_pkx_brief(pkx: &impl Pkx) {
         iv_spe
     );
 }
+
+
+
+pub fn draw_pkx_rgb(pkx: &impl Pkx, pkx_type: PkxType, slot: u32) {
+    let species = pkx.species_t().to_string();
+    let ability = pkx.ability_t().to_string();
+
+    let shiny_type = shiny_type(pkx);
+    let shiny_color = get_shiny_color(pkx.is_shiny());
+    let iv_hp = pkx.iv_hp();
+    let iv_atk = pkx.iv_atk();
+    let iv_def = pkx.iv_def();
+    let iv_spa = pkx.iv_spa();
+    let iv_spd = pkx.iv_spd();
+    let iv_spe = pkx.iv_spe();
+
+    let ev_hp = pkx.ev_hp();
+    let ev_atk = pkx.ev_atk();
+    let ev_def = pkx.ev_def();
+    let ev_spa = pkx.ev_spa();
+    let ev_spd = pkx.ev_spd();
+    let ev_spe = pkx.ev_spe();
+
+    let nature = pkx.nature_t();
+    let nature_stat = nature_stat(nature);
+
+    if elapsed_time() / 100 % 5 == 0 {
+        pnp::println!(color = RED, "{} {}", nature, species);
+    } else if elapsed_time() / 100 % 2 == 0 {
+        pnp::println!(color = ORANGE, "{} {}", nature, species);
+    } else {
+        pnp::println!(color = CYAN, "{} {}", nature, species);
+    }
+
+    if elapsed_time() / 100 % 5 == 0 {
+        pnp::println!(color = PINK, "Ability: ({}) {}", pkx.ability_number_t(), ability);
+    } else if elapsed_time() / 100 % 2 == 0 {
+        pnp::println!(color = GREEN, "Ability: ({}) {}", pkx.ability_number_t(), ability);
+    } else {
+        pnp::println!(color = CYAN, "Ability: ({}) {}", pkx.ability_number_t(), ability);
+    }
+
+    if elapsed_time() / 100 % 5 == 0 {
+        pnp::println!(color = PINK, "PID: {:08X}", pkx.pid());
+    } else if elapsed_time() / 100 % 2 == 0 {
+        pnp::println!(color = ORANGE, "PID: {:08X}", pkx.pid());
+    } else {
+        pnp::println!(color = CYAN, "PID: {:08X}", pkx.pid());
+    }
+
+    if elapsed_time() / 100 % 5 == 0 {
+        pnp::println!(color = BLUE, "PSV: {:04}, {}", pkx.psv(), shiny_type);
+    } else if elapsed_time() / 100 % 2 == 0 {
+        pnp::println!(color = PINK, "PSV: {:04}, {}", pkx.psv(), shiny_type);
+    } else {
+        pnp::println!(color = CYAN, "PSV: {:04}, {}", pkx.psv(), shiny_type);
+    }
+
+    if pkx_type == PkxType::Tame {
+        // Friendship will always be zero for wild pokemon and does not fit
+        pnp::println!("Friendship: {}", pkx.current_friendship());
+    }
+
+    if elapsed_time() / 100 % 5 == 0 {
+        pnp::println!(color = YELLOW, "HPower: {}", pkx.hidden_power_t());
+    } else if elapsed_time() / 100 % 2 == 0 {
+        pnp::println!(color = RED, "HPower: {}", pkx.hidden_power_t());
+    } else {
+        pnp::println!(color = GREEN, "HPower: {}", pkx.hidden_power_t());
+    }
+
+    //pnp::println!();
+    if pkx_type == PkxType::Wild {
+        // PP does not matter for Party/Box view as you can just summary
+        print_pp(get_pp(pkx));
+    }
+    print_stat!(iv_hp, ev_hp, Hp, &nature_stat, "HP ");
+    print_stat!(iv_atk, ev_atk, Atk, &nature_stat, "Atk ");
+    print_stat!(iv_def, ev_def, Def, &nature_stat, "Def ");
+    print_stat!(iv_spa, ev_spa, SpA, &nature_stat, "SpA ");
+    print_stat!(iv_spd, ev_spd, SpD, &nature_stat, "SpD ");
+    print_stat!(iv_spe, ev_spe, Spe, &nature_stat, "Spe ");
+}
+
 
 pub fn draw_pkx(pkx: &impl Pkx, pkx_type: PkxType) {
     let species = pkx.species_t().to_string();
@@ -289,14 +393,26 @@ pub fn draw_misc_help() {
     }
 }
 
-pub fn draw_header<T: Eq>(main_menu: T, current_view: T, is_locked: bool) {
-    if is_locked {
-        pnp::println!("UL: XY == CST.3GX");//"Unlock X+Y");
-    } else if current_view == main_menu {
-        pnp::println!("=> USUM.3GX - CST.3GX");//-> Accept / Lock X+Y");
+pub fn draw_header<T: Eq>(main_menu: T, current_view: T, is_locked: bool, is_cached: bool) {
+    if !is_cached {
+        if is_locked {
+            pnp::println!("Unlock X+Y");
+        } else if current_view == main_menu {
+            pnp::println!("-> Accept / Lock X+Y");
+        } else {
+            pnp::println!("<- Back / Lock X+Y"); // CST.3GX
+        }
     } else {
-        pnp::println!("=> USUM.3GX - CST.3GX");//<- Back / Lock X+Y");
+        // prints nothing 
     }
-
-    pnp::println!("");
+    /*
+    if is_locked {
+        pnp::println!("Unlock X+Y");
+    } else if current_view == main_menu {
+        pnp::println!("-> Accept / Lock X+Y");
+    } else {
+        pnp::println!("<- Back / Lock X+Y"); // CST.3GX
+    }
+    */
+    //pnp::println!("");
 }

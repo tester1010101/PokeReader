@@ -13,9 +13,9 @@ impl SubMenu {
     }
 
     fn draw_header(&self) {
-        pnp::println!("Slot {}", self.counter.value());
-        pnp::println!("[v] Next | Prev [^]");
-        pnp::println!("");
+        //pnp::println!("Slot {}", self.counter.value());
+        //pnp::println!("[v] Next | Prev [^]");
+        //pnp::println!("");
     }
 
     fn update_counter(&mut self, is_locked: bool) {
