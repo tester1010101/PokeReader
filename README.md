@@ -15,7 +15,9 @@ New features:
 >
 > ✓ Seed file on SDMC gets updated at each game restart (ms latency).
 >
-> ✓ Any data can be on start menu, mod/impl. may be req. though.
+> ✓ Metrics added on start with RNG seed, RGB effects, live frames, calibrate easily your tapping...
+>
+> ✓ Any data can be on start menu, modifications/implementations may be required though.
 >
 > ✕ Only display RNG on start with Gen7 (US/UM), no other gen planned either...
 >
